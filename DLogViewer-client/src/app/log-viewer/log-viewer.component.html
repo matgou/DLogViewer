@@ -11,7 +11,7 @@
               <li class="nav-item">
                 <a class="nav-link active" href="#">
                   <span data-feather="home"></span>
-                  {{ filename }} <span class="sr-only">(current)</span>
+                  {{ file.getBasename() }} <span class="sr-only">(current)</span>
                 </a>
               </li>
              </ul>
@@ -26,7 +26,7 @@
               <li class="nav-item">
                 <a class="nav-link" href="#">
                   <span data-feather="file-text"></span>
-				  {{ host }} : {{ filename }}
+				  {{ file.getHostname() }} : {{ file.getBasename() }}
                 </a>
               </li>
             </ul>
@@ -35,7 +35,7 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-            <h1 class="h2">{{ filename }}</h1>
+            <h1 class="h2">{{ file.getBasename() }}</h1>
           </div>
 		  <!-- Affichage des messages logs -->
 		  <table class="table table-dark">

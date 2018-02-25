@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 
 import { AgentManagerService } from '../agent-manager.service'
+import { LogFile } from '../log-file';
 
 @Component({
   selector: 'app-log-viewer',
@@ -11,8 +12,7 @@ import { AgentManagerService } from '../agent-manager.service'
 })
 export class LogViewerComponent implements OnInit {
   messages: string[] = new Array();
-  host: string;
-  filename: string;
+  file: LogFile;
   
   private agentManagerService: AgentManagerService;
   private route: ActivatedRoute;
@@ -23,12 +23,17 @@ export class LogViewerComponent implements OnInit {
   ) { 
 	this.agentManagerService = agentManagerService;
     this.route = route;
+	this.file = new LogFile();
+
   }
   
   ngOnInit() {
-    this.host = this.route.snapshot.paramMap.get('host');
-	this.filename = this.route.snapshot.paramMap.get('filename');
-    this.agentManagerService.play(this.host, this.filename, '50').subscribe(
+    let host = this.route.snapshot.paramMap.get('host');
+	let filename = this.route.snapshot.paramMap.get('filename');
+	this.file.filename = filename;
+	this.file.host = host;
+	  
+    this.agentManagerService.play(this.file.host, this.file.filename, '50').subscribe(
 		(x) => {
 			let reader: FileReader = new FileReader();
 			reader.onload = (event) => {
