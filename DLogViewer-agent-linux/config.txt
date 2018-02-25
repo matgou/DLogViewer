@@ -1,0 +1,3 @@
+AGENT_KEY=8defac952c46cbd4f9c1
+
+PATH_PATERN="/mnt/tank/system/middleware/nginx/front/log/*log"
