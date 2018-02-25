@@ -1,6 +1,9 @@
+import { Host } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { LogFile } from '../log-file';
 import { AgentManagerService } from '../agent-manager.service';
+import { AppComponent } from '../app.component';
+import { SearchEventService } from '../search-event.service';
 
 @Component({
   selector: 'app-log-list',
@@ -10,11 +13,18 @@ import { AgentManagerService } from '../agent-manager.service';
 export class LogListComponent implements OnInit {
   private agentManagerService: AgentManagerService;
   files: LogFile[] = Array();
-  
+  searchText:string;
+  parentComponent:AppComponent;
+  searchEventService: SearchEventService;
+	
   constructor(
+    @Host() parentComponent:AppComponent,
   	agentManagerService: AgentManagerService,
+	searchEventService: SearchEventService,
   ) { 
   	this.agentManagerService = agentManagerService;
+	this.parentComponent = parentComponent;
+	this.searchEventService = searchEventService;
   }
 
   parseHostConfig(config: string) {
@@ -44,9 +54,9 @@ export class LogListComponent implements OnInit {
   }
  
   ngOnInit() {
+	  this.searchEventService.latestSearch.subscribe(txt=> { this.searchText = txt; });
 	  this.agentManagerService.getHosts().subscribe(
 	    data => { this.parseHostConfig(data); }
 	  );
   }
-
 }

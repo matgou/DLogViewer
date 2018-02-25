@@ -13,7 +13,6 @@ import { LogFile } from '../log-file';
 export class LogViewerComponent implements OnInit {
   messages: string[] = new Array();
   file: LogFile;
-  
   private agentManagerService: AgentManagerService;
   private route: ActivatedRoute;
   
@@ -47,5 +46,4 @@ export class LogViewerComponent implements OnInit {
 		}
 	);
   }
-
 }

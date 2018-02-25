@@ -13,8 +13,8 @@
 				</tr>
 			  </thead>
 			  <tbody>
-				<tr *ngFor="let file of files; let i = index">
-				  <td>{{ file.host }}</td>
+				<tr *ngFor="let file of files|logFileFilter:searchText; let i = index">
+				  <td>{{ file.getHostname() }}</td>
 				  <td>{{ file.filename }}</td>
 				  <td><button type="button" class="btn btn-success" [routerLink]="['/tail', file.host, file.filename, file.key]" routerLinkActive="active"><i class="fa fa-play"></i> Live</button></td>
 				</tr>
