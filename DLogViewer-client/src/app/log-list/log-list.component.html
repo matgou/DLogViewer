@@ -16,7 +16,7 @@
 				<tr *ngFor="let file of files; let i = index">
 				  <td>{{ file.host }}</td>
 				  <td>{{ file.filename }}</td>
-				  <td><button type="button" class="btn btn-success" [routerLink]="['/tail', file.host, file.filename]" routerLinkActive="active"><i class="fa fa-play"></i> Live</button></td>
+				  <td><button type="button" class="btn btn-success" [routerLink]="['/tail', file.host, file.filename, file.key]" routerLinkActive="active"><i class="fa fa-play"></i> Live</button></td>
 				</tr>
 			  </tbody>
 			</table>

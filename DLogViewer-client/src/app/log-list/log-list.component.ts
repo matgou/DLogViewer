@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LogFile } from '../log-file';
+import { AgentManagerService } from '../agent-manager.service';
 
 @Component({
   selector: 'app-log-list',
@@ -7,15 +8,45 @@ import { LogFile } from '../log-file';
   styleUrls: ['./log-list.component.css']
 })
 export class LogListComponent implements OnInit {
-
+  private agentManagerService: AgentManagerService;
   files: LogFile[] = Array();
-  constructor() { }
+  
+  constructor(
+  	agentManagerService: AgentManagerService,
+  ) { 
+  	this.agentManagerService = agentManagerService;
+  }
 
+  parseHostConfig(config: string) {
+	  let lines = config.split("\n");
+	  for(let line of lines) {
+		  let params = line.split(";");
+		  console.log(params[0]);
+		  this.agentManagerService.getFiles(params[0], params[1]).subscribe(
+			(x) => {
+				let reader: FileReader = new FileReader();
+				reader.onload = (event) => {
+					let filenames = reader.result.split("\n"); 
+					for(let filename of filenames) {
+						if(filename != '') {
+							let file = new LogFile();
+							file.filename = filename;
+							file.host = params[0];
+							file.key = params[1];
+							this.files.push(file);
+						}
+					}
+				}
+				reader.readAsText(x.data);
+			}
+			);
+	  }
+  }
+ 
   ngOnInit() {
-	  let file = new LogFile();
-	  file.filename = '/mnt/tank/system/middleware/nginx/front/log/access.log';
-	  file.host = 'pfhd1.kapable.info:65000';
-	  this.files.push(file);
+	  this.agentManagerService.getHosts().subscribe(
+	    data => { this.parseHostConfig(data); }
+	  );
   }
 
 }

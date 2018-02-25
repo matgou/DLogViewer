@@ -30,10 +30,12 @@ export class LogViewerComponent implements OnInit {
   ngOnInit() {
     let host = this.route.snapshot.paramMap.get('host');
 	let filename = this.route.snapshot.paramMap.get('filename');
+	let key = this.route.snapshot.paramMap.get('key');
 	this.file.filename = filename;
 	this.file.host = host;
-	  
-    this.agentManagerService.play(this.file.host, this.file.filename, '50').subscribe(
+	this.file.key = key;
+	
+    this.agentManagerService.play(this.file.host, this.file.filename, '50', this.file.key).subscribe(
 		(x) => {
 			let reader: FileReader = new FileReader();
 			reader.onload = (event) => {
