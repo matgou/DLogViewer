@@ -57,7 +57,7 @@ export class LogViewerComponent implements OnInit {
   	this.file.host = host;
   	this.file.key = key;
 
-    this.agentManagerService.play(this.file.host, this.file.filename, '50', this.file.key).subscribe(
+    this.agentManagerService.play(this.file.host, this.file.filename, '250', this.file.key).subscribe(
 		(x) => {
 			let reader: FileReader = new FileReader();
 			reader.onload = (event) => {

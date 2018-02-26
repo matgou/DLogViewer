@@ -16,11 +16,11 @@ cmdTail() {
     read histoSize
     log "histoSize=$histoSize"
 
+    IFS=''
     tail -n $histoSize $filename | while read line;
     do 
-        echo $line
+        echo "$line"
         cat /dev/null
-        sync
     done
     tail -n 0 -f $filename
 }

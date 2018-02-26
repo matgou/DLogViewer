@@ -42,13 +42,12 @@
     			  <thead>
     				<tr>
     				  <th scope="col">#</th>
-    				  <th scope="col">text</th>
     				</tr>
     			  </thead>
     			  <tbody>
     				<tr *ngFor="let message of messages|messagesFilter:searchText; let i = index">
-    				  <th scope="row">{{ i }}</th>
-    				  <td>{{ message }}</td>
+    				  <!--<th scope="row">{{ i }}</th>-->
+    				  <td style="padding:0;"><pre style="color: #FFFFFF; white-space: pre; margin-bottom:0;"><span>{{ message }}</span></pre></td>
     				</tr>
     			  </tbody>
     			</table>
