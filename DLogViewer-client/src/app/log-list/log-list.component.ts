@@ -23,8 +23,8 @@ export class LogListComponent implements OnInit {
 	searchEventService: SearchEventService,
   ) {
   	this.agentManagerService = agentManagerService;
-	this.parentComponent = parentComponent;
-	this.searchEventService = searchEventService;
+  	this.parentComponent = parentComponent;
+  	this.searchEventService = searchEventService;
   }
 
   parseHostConfig(config: string) {
@@ -54,8 +54,8 @@ export class LogListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.searchEventService.cleanSearch();
 	  this.searchEventService.latestSearch.subscribe(txt=> { this.searchText = txt; });
+    this.searchEventService.cleanSearch();
 	  this.agentManagerService.getHosts().subscribe(
 	    data => { this.parseHostConfig(data); }
 	  );

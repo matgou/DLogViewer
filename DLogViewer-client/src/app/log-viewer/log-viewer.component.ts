@@ -14,6 +14,7 @@ import { SearchEventService } from '../search-event.service';
 export class LogViewerComponent implements OnInit {
   messages: string[] = new Array();
   file: LogFile;
+  searchText:string;
   private agentManagerService: AgentManagerService;
   private route: ActivatedRoute;
   private searchEventService: SearchEventService;
@@ -30,7 +31,9 @@ export class LogViewerComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.searchEventService.latestSearch.subscribe(txt=> { this.searchText = txt; });
     this.searchEventService.cleanSearch();
+
     let host = this.route.snapshot.paramMap.get('host');
   	let filename = this.route.snapshot.paramMap.get('filename');
   	let key = this.route.snapshot.paramMap.get('key');

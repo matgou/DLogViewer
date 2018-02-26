@@ -5,7 +5,7 @@
             <ul class="nav flex-column">
 			<li class="nav-item">
                 <a class="nav-link" routerLink="/list" routerLinkActive="active" href="#">
-					<i class="fa fa-long-arrow-left"></i> Liste des fichiers 
+					<i class="fa fa-long-arrow-left"></i> Liste des fichiers
                 </a>
               </li>
               <li class="nav-item">
@@ -46,7 +46,7 @@
 				</tr>
 			  </thead>
 			  <tbody>
-				<tr *ngFor="let message of messages; let i = index">
+				<tr *ngFor="let message of messages|messagesFilter:searchText; let i = index">
 				  <th scope="row">{{ i }}</th>
 				  <td>{{ message }}</td>
 				</tr>

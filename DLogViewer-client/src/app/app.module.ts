@@ -11,6 +11,7 @@ import { AgentManagerService } from './agent-manager.service';
 import { LogListComponent } from './log-list/log-list.component';
 import { LogFileFilterPipe } from './log-file-filter.pipe';
 import { SearchEventService } from './search-event.service';
+import { MessagesFilterPipe } from './messages-filter.pipe';
 
 const appRoutes: Routes = [
   { path: 'tail/:host/:filename/:key', component: LogViewerComponent },
@@ -23,7 +24,8 @@ const appRoutes: Routes = [
     AppComponent,
     LogViewerComponent,
     LogListComponent,
-    LogFileFilterPipe
+    LogFileFilterPipe,
+    MessagesFilterPipe
 	],
   imports: [
     BrowserModule,
