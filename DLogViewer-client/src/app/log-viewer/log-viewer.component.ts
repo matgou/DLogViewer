@@ -18,6 +18,7 @@ export class LogViewerComponent implements OnInit {
   private agentManagerService: AgentManagerService;
   private route: ActivatedRoute;
   private searchEventService: SearchEventService;
+  blobPartsDownload:any[] = new Array();
 
   constructor(
   	agentManagerService: AgentManagerService,
@@ -28,6 +29,21 @@ export class LogViewerComponent implements OnInit {
      this.route = route;
      this.searchEventService = searchEventService;
 	   this.file = new LogFile();
+  }
+
+  download(host:string, filename:string, key:string) {
+    this.agentManagerService.cat(host,filename,key).subscribe(
+      data => { console.log("receive data"); this.blobPartsDownload.push(data.data); },
+      error => console.log("Error downloading the file."),
+      () => this.downloadFile();
+    );
+  }
+
+  downloadFile() {
+    var blob = new Blob(this.blobPartsDownload, { type: "text/plain" });
+    var url= window.URL.createObjectURL(blob);
+    window.open(url);
+    this.blobPartsDownload = Array();
   }
 
   ngOnInit() {

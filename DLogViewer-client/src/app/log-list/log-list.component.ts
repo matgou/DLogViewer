@@ -16,6 +16,7 @@ export class LogListComponent implements OnInit {
   searchText:string;
   parentComponent:AppComponent;
   searchEventService: SearchEventService;
+  blobPartsDownload:any[] = new Array();
 
   constructor(
     @Host() parentComponent:AppComponent,
@@ -25,6 +26,21 @@ export class LogListComponent implements OnInit {
   	this.agentManagerService = agentManagerService;
   	this.parentComponent = parentComponent;
   	this.searchEventService = searchEventService;
+  }
+
+  download(host:string, filename:string, key:string) {
+    this.agentManagerService.cat(host,filename,key).subscribe(
+      data => { console.log("receive data"); this.blobPartsDownload.push(data.data); },
+      error => console.log("Error downloading the file."),
+      () => this.downloadFile();
+    );
+  }
+
+  downloadFile() {
+    var blob = new Blob(this.blobPartsDownload, { type: "text/plain" });
+    var url= window.URL.createObjectURL(blob);
+    window.open(url);
+    this.blobPartsDownload = Array();
   }
 
   parseHostConfig(config: string) {

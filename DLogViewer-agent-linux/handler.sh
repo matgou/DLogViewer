@@ -25,6 +25,14 @@ cmdTail() {
     tail -n 0 -f $filename
 }
 
+# cat file
+cmdCat() {
+    read filename
+    log "filename=$filename"
+
+    cat $filename
+}
+
 # list available file
 cmdLs() {
     for patern in $PATH_PATERN
@@ -54,6 +62,9 @@ read cmd
 case $cmd in
   "ls")
     cmdLs	
+  ;;
+  "cat")
+    cmdCat
   ;;
   "tail")
     cmdTail

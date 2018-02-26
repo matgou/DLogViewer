@@ -37,19 +37,21 @@
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
             <h1 class="h2">{{ file.getBasename() }}</h1>
           </div>
-		  <!-- Affichage des messages logs -->
-		  <table class="table table-dark">
-			  <thead>
-				<tr>
-				  <th scope="col">#</th>
-				  <th scope="col">text</th>
-				</tr>
-			  </thead>
-			  <tbody>
-				<tr *ngFor="let message of messages|messagesFilter:searchText; let i = index">
-				  <th scope="row">{{ i }}</th>
-				  <td>{{ message }}</td>
-				</tr>
-			  </tbody>
-			</table>
+    		  <!-- Affichage des messages logs -->
+    		  <table class="table table-dark">
+    			  <thead>
+    				<tr>
+    				  <th scope="col">#</th>
+    				  <th scope="col">text</th>
+    				</tr>
+    			  </thead>
+    			  <tbody>
+    				<tr *ngFor="let message of messages|messagesFilter:searchText; let i = index">
+    				  <th scope="row">{{ i }}</th>
+    				  <td>{{ message }}</td>
+    				</tr>
+    			  </tbody>
+    			</table>
+
+          <button type="button" class="btn btn-info" (click)="download(file.host, file.filename, file.key)"><i class="fa fa-download"></i>  T&eacute;l&eacute;charger</button>
 		</main>
