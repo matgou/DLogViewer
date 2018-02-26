@@ -3,7 +3,7 @@
 # read on stdin : key, command and extra parameters
 
 AgentDirectory=$( dirname $0 )
-LogFile=$AgentDirectory/$LogFile
+LogFile=$AgentDirectory/log.txt
 configFile=$AgentDirectory/config.txt
 
 . $configFile
