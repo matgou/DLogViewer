@@ -2,12 +2,16 @@ export class LogFile {
 	public filename:string;
 	public host:string;
 	public key:string;
-	
+
 	getBasename() {
-		return this.filename.split('/').reverse()[0];
+		if(this.filename != undefined) {
+			return this.filename.split('/').reverse()[0];
+		}
 	}
-	
+
 	getHostname() {
-		return this.host.split(':')[0];
+		if(this.host != undefined) {
+			return this.host.split(':')[0];
+		}
 	}
 }

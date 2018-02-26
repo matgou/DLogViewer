@@ -3,12 +3,20 @@ import {Subject} from 'rxjs/Subject';
 
 @Injectable()
 export class SearchEventService {
-  latestSearch:Subject=new Subject();
-  
+  latestSearch:Subject<string>=new Subject<string>();
+  cleanSearchEvent:Subject<string>=new Subject<string>();
+
   constructor() { }
-  
+
   updateSearch(searchText:string) {
-	console.log(searchText);
-	this.latestSearch.next(searchText);
+	   console.log(searchText);
+	   this.latestSearch.next(searchText);
   }
+
+  cleanSearch() {
+    console.log("CleanSearch");
+    this.latestSearch.next("");
+    this.cleanSearchEvent.next("");
+  }
+
 }

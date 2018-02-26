@@ -16,12 +16,12 @@ export class LogListComponent implements OnInit {
   searchText:string;
   parentComponent:AppComponent;
   searchEventService: SearchEventService;
-	
+
   constructor(
     @Host() parentComponent:AppComponent,
   	agentManagerService: AgentManagerService,
 	searchEventService: SearchEventService,
-  ) { 
+  ) {
   	this.agentManagerService = agentManagerService;
 	this.parentComponent = parentComponent;
 	this.searchEventService = searchEventService;
@@ -36,7 +36,7 @@ export class LogListComponent implements OnInit {
 			(x) => {
 				let reader: FileReader = new FileReader();
 				reader.onload = (event) => {
-					let filenames = reader.result.split("\n"); 
+					let filenames = reader.result.split("\n");
 					for(let filename of filenames) {
 						if(filename != '') {
 							let file = new LogFile();
@@ -52,8 +52,9 @@ export class LogListComponent implements OnInit {
 			);
 	  }
   }
- 
+
   ngOnInit() {
+    this.searchEventService.cleanSearch();
 	  this.searchEventService.latestSearch.subscribe(txt=> { this.searchText = txt; });
 	  this.agentManagerService.getHosts().subscribe(
 	    data => { this.parseHostConfig(data); }

@@ -32,7 +32,7 @@ const appRoutes: Routes = [
 	NgbModule.forRoot(),
     RouterModule.forRoot(
       appRoutes,
-      { useHash: true, enableTracing: true } // <-- debugging purposes only
+      { useHash: true } // <-- debugging purposes only
     )
   ],
   providers: [ AgentManagerService, SearchEventService ],
