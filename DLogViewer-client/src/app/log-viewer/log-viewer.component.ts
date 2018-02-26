@@ -4,7 +4,7 @@ import 'rxjs/add/operator/switchMap';
 
 import { AgentManagerService } from '../agent-manager.service'
 import { LogFile } from '../log-file';
-import { SearchEventService } from '../search-event.service';
+import { NavbarEventService } from '../navbar-event.service';
 
 @Component({
   selector: 'app-log-viewer',
@@ -17,17 +17,17 @@ export class LogViewerComponent implements OnInit {
   searchText:string;
   private agentManagerService: AgentManagerService;
   private route: ActivatedRoute;
-  private searchEventService: SearchEventService;
+  private navbarEventService: NavbarEventService;
   blobPartsDownload:any[] = new Array();
 
   constructor(
   	agentManagerService: AgentManagerService,
   	route: ActivatedRoute,
-    searchEventService: SearchEventService,
+    navbarEventService: NavbarEventService,
   ) {
 	   this.agentManagerService = agentManagerService;
      this.route = route;
-     this.searchEventService = searchEventService;
+     this.navbarEventService = navbarEventService;
 	   this.file = new LogFile();
   }
 
@@ -35,7 +35,7 @@ export class LogViewerComponent implements OnInit {
     this.agentManagerService.cat(host,filename,key).subscribe(
       data => { console.log("receive data"); this.blobPartsDownload.push(data.data); },
       error => console.log("Error downloading the file."),
-      () => this.downloadFile();
+      () => this.downloadFile(),
     );
   }
 
@@ -47,8 +47,8 @@ export class LogViewerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.searchEventService.latestSearch.subscribe(txt=> { this.searchText = txt; });
-    this.searchEventService.cleanSearch();
+    this.navbarEventService.latestSearch.subscribe(txt=> { this.searchText = txt; });
+    this.navbarEventService.cleanSearch();
 
     let host = this.route.snapshot.paramMap.get('host');
   	let filename = this.route.snapshot.paramMap.get('filename');

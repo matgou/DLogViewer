@@ -10,7 +10,7 @@ import { LogViewerComponent } from './log-viewer/log-viewer.component';
 import { AgentManagerService } from './agent-manager.service';
 import { LogListComponent } from './log-list/log-list.component';
 import { LogFileFilterPipe } from './log-file-filter.pipe';
-import { SearchEventService } from './search-event.service';
+import { NavbarEventService } from './navbar-event.service';
 import { MessagesFilterPipe } from './messages-filter.pipe';
 
 const appRoutes: Routes = [
@@ -37,7 +37,7 @@ const appRoutes: Routes = [
       { useHash: true } // <-- debugging purposes only
     )
   ],
-  providers: [ AgentManagerService, SearchEventService ],
+  providers: [ AgentManagerService, NavbarEventService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

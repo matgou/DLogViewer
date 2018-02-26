@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { LogFile } from '../log-file';
 import { AgentManagerService } from '../agent-manager.service';
 import { AppComponent } from '../app.component';
-import { SearchEventService } from '../search-event.service';
+import { NavbarEventService } from '../navbar-event.service';
 
 @Component({
   selector: 'app-log-list',
@@ -15,24 +15,24 @@ export class LogListComponent implements OnInit {
   files: LogFile[] = Array();
   searchText:string;
   parentComponent:AppComponent;
-  searchEventService: SearchEventService;
+  navbarEventService: NavbarEventService;
   blobPartsDownload:any[] = new Array();
 
   constructor(
     @Host() parentComponent:AppComponent,
-  	agentManagerService: AgentManagerService,
-	searchEventService: SearchEventService,
+  	 agentManagerService: AgentManagerService,
+	   navbarEventService: NavbarEventService,
   ) {
   	this.agentManagerService = agentManagerService;
   	this.parentComponent = parentComponent;
-  	this.searchEventService = searchEventService;
+  	this.navbarEventService = navbarEventService;
   }
 
   download(host:string, filename:string, key:string) {
     this.agentManagerService.cat(host,filename,key).subscribe(
       data => { console.log("receive data"); this.blobPartsDownload.push(data.data); },
       error => console.log("Error downloading the file."),
-      () => this.downloadFile();
+      () => this.downloadFile()
     );
   }
 
@@ -70,8 +70,8 @@ export class LogListComponent implements OnInit {
   }
 
   ngOnInit() {
-	  this.searchEventService.latestSearch.subscribe(txt=> { this.searchText = txt; });
-    this.searchEventService.cleanSearch();
+	  this.navbarEventService.latestSearch.subscribe(txt=> { this.searchText = txt; });
+    this.navbarEventService.cleanSearch();
 	  this.agentManagerService.getHosts().subscribe(
 	    data => { this.parseHostConfig(data); }
 	  );

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
-import { SearchEventService } from './search-event.service';
+import { NavbarEventService } from './navbar-event.service';
 
 @Component({
   selector: 'app-root',
@@ -10,14 +10,14 @@ import { SearchEventService } from './search-event.service';
 export class AppComponent implements OnInit {
   title = 'app';
   public searchText: string = '';
-  searchEventService: SearchEventService;
+  navbarEventService: NavbarEventService;
 
   constructor(
-    searchEventService: SearchEventService,
+    navbarEventService: NavbarEventService,
     private cdr: ChangeDetectorRef,
   ) {
-  	this.searchEventService = searchEventService;
-    this.searchEventService.cleanSearchEvent.subscribe(
+  	this.navbarEventService = navbarEventService;
+    this.navbarEventService.cleanSearchEvent.subscribe(
         (x) => {
           console.log("CleanSearch receive");
           this.searchText = "";
@@ -30,6 +30,6 @@ export class AppComponent implements OnInit {
   }
 
   searchChange(event) {
-  	this.searchEventService.updateSearch(event);
+  	this.navbarEventService.updateSearch(event);
   }
 }

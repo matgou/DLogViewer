@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {Subject} from 'rxjs/Subject';
 
 @Injectable()
-export class SearchEventService {
+export class NavbarEventService {
   latestSearch:Subject<string>=new Subject<string>();
   cleanSearchEvent:Subject<string>=new Subject<string>();
 
