@@ -2,23 +2,28 @@
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">DLogViewer</a>
       <input class="form-control form-control-dark w-100" type="text" placeholder="Rechercher" aria-label="Search" [(ngModel)]="searchText" (ngModelChange)="searchChange($event)">
-  	  <ul class="navbar-nav px-3">
+      <ul class="navbar-nav px-3" *ngIf="canPlay">
           <li class="nav-item text-nowrap">
-            <a class="nav-link" href="#"><i class="fa fa-pause"></i> Pause</a>
+            <a class="nav-link" href="javascript:void(0)" (click)="play()"><i class="fa fa-play"></i> Lecture</a>
           </li>
   	  </ul>
-  	  <ul class="navbar-nav px-3">
+      <ul class="navbar-nav px-3" *ngIf="canPause">
           <li class="nav-item text-nowrap">
-            <a class="nav-link" href="#"><i class="fa fa-download"></i> T&eacute;l&eacute;charger</a>
+            <a class="nav-link" href="javascript:void(0)" (click)="pause()"><i class="fa fa-pause"></i> Pause</a>
+          </li>
+  	  </ul>
+  	  <ul class="navbar-nav px-3" *ngIf="canDownload">
+          <li class="nav-item text-nowrap">
+            <a class="nav-link" href="javascript:void(0)" (click)="download()"><i class="fa fa-download"></i> T&eacute;l&eacute;charger</a>
           </li>
       </ul>
 </nav>
 
 <div class="container-fluid">
 	<router-outlet></router-outlet>
-	<!-- Footer -->
+	<!-- Footer --><!--
 	<div>
 		<p><i class="fa fa-file-o"></i> <a href="https://github.com/matgou/DLogViewer">https://github.com/matgou/DLogViewer</a><br/></p>
 		<p><i class="fa fa-envelope-o"></i> <a href="mailto:mathieu.goulin@gadz.org">Mathieu GOULIN</a></p>
-	</div>
+	</div>-->
 </div>
