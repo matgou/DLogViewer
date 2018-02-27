@@ -5,6 +5,7 @@ import { AgentManagerService } from '../agent-manager.service';
 import { AppComponent } from '../app.component';
 import { NavbarEventService } from '../navbar-event.service';
 import { Agent } from '../agent';
+import { ISubscription } from "rxjs/Subscription";
 
 @Component({
   selector: 'app-log-list',
@@ -15,10 +16,12 @@ export class LogListComponent implements OnInit {
   private agentManagerService: AgentManagerService;
   files: LogFile[] = Array();
   searchText:string;
-  filterUrl:string='';
   agents:Agent[];
+  activatedAgents:Agent[];
   parentComponent:AppComponent;
   navbarEventService: NavbarEventService;
+  private filesSubscription: ISubscription[] = Array();
+
   blobPartsDownload:any[] = new Array();
 
   constructor(
@@ -46,55 +49,64 @@ export class LogListComponent implements OnInit {
     this.blobPartsDownload = Array();
   }
 
-  filterOn(agent:Agent) {
-    this.files=Array();
-    this.filterUrl = agent.url;
-    this.agentManagerService.getFiles(agent.url, agent.key).subscribe(
-    (x) => {
-      let reader: FileReader = new FileReader();
-      reader.onload = (event) => {
-        let filenames = reader.result.split("\n");
-        for(let filename of filenames) {
-          if(filename != '') {
-            let file = new LogFile();
-            file.filename = filename;
-            agent.enable = true;
-            file.agent = agent;
-            this.files.push(file);
-          }
-        }
-      }
-      reader.readAsText(x.data);
+  isAgentDisplay(agent:Agent):boolean {
+    let i = this.activatedAgents.findIndex(x => x.url === agent.url);
+    if(i<0) {
+      return false;
+    } else {
+      return true;
     }
-    );
+  }
+
+  filterOn(agent:Agent) {
+    let i = this.activatedAgents.findIndex(x => x.url === agent.url);
+    if(i<0) {
+      this.activatedAgents.push(agent);
+    } else {
+      this.activatedAgents = this.activatedAgents.filter(x => x.url !== agent.url);
+    }
+    this.refreshList();
   }
 
   parseHostConfig(config: string) {
 	  let lines = config.split("\n");
     this.agents = Array();
+    this.activatedAgents = Array();
 	  for(let line of lines) {
 		  let params = line.split(";");
       let a:Agent = new Agent(params[0], params[1]);
       this.agents.push(a);
+      this.activatedAgents.push(a);
 		  console.log(a);
-		  this.agentManagerService.getFiles(params[0], params[1]).subscribe(
-			(x) => {
-				let reader: FileReader = new FileReader();
-				reader.onload = (event) => {
-					let filenames = reader.result.split("\n");
-					for(let filename of filenames) {
-						if(filename != '') {
-							let file = new LogFile();
-							file.filename = filename;
-              a.enable = true;
-							file.agent = a;
-							this.files.push(file);
-						}
-					}
-				}
-				reader.readAsText(x.data);
-			}
-			);
+    }
+    this.refreshList();
+  }
+
+  refreshList() {
+    for(let subscription of this.filesSubscription) {
+      subscription.unsubscribe();
+    }
+    this.files = Array();
+    for(let agent of this.activatedAgents) {
+		    let subscription = this.agentManagerService.getFiles(agent.url, agent.key).subscribe(
+			       (x) => {
+				           let reader: FileReader = new FileReader();
+				           reader.onload = (event) => {
+  					         let filenames = reader.result.split("\n");
+  					         for(let filename of filenames) {
+  						               if(filename != '') {
+  							                      let file = new LogFile();
+  							                      file.filename = filename;
+                                      agent.enable = true;
+  							                      file.agent = agent;
+  							                      this.files.push(file);
+  						               }
+  					         }
+				           }
+				           reader.readAsText(x.data);
+			         }
+			  );
+        this.filesSubscription.push(subscription);
 	  }
   }
 
