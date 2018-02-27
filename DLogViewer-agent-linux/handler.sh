@@ -58,6 +58,9 @@ then
 	exit 1
 fi
 
+# Fix to kill all child on exit
+trap 'kill $(jobs -p)' EXIT
+
 read cmd
 case $cmd in
   "ls")
