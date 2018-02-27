@@ -1,5 +1,10 @@
 <!-- navbar -->
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+      <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+          <a class="nav-link" href="javascript:void(0)" (click)="toggleSidebar()"><i class="fa fa-list"></i></a>
+        </li>
+      </ul>
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">DLogViewer</a>
       <input class="form-control form-control-dark w-100" type="text" placeholder="Rechercher" aria-label="Search" [(ngModel)]="searchText" (ngModelChange)="searchChange($event)">
       <ul class="navbar-nav px-3" *ngIf="canPlay">

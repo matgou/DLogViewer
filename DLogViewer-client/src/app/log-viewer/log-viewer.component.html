@@ -1,6 +1,6 @@
 
       <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+        <nav *ngIf="isSidebarActive" class="col-md-2 d-none d-md-block bg-light sidebar">
           <div class="sidebar-sticky">
             <ul class="nav flex-column">
 			<li class="nav-item">
@@ -26,14 +26,14 @@
               <li class="nav-item">
                 <a class="nav-link" href="#">
                   <span data-feather="file-text"></span>
-				  {{ file.getHostname() }} : {{ file.getBasename() }}
+				          {{ file.getHostname() }} : {{ file.getBasename() }}
                 </a>
               </li>
             </ul>
           </div>
         </nav>
 
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+        <main role="main" class="ml-sm-auto pt-3 px-4" [ngClass]="[isSidebarActive ? 'col-md-9 col-lg-10' : 'col-md-12 col-lg-12']">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
             <h1 class="h2">{{ file.getBasename() }}</h1>
           </div>

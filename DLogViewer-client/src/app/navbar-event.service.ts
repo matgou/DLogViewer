@@ -11,6 +11,7 @@ export class NavbarEventService {
   downloadButtonEvent:Subject<boolean>=new Subject<boolean>();
   pauseButtonEvent:Subject<boolean>=new Subject<boolean>();
   playButtonEvent:Subject<boolean>=new Subject<boolean>();
+  sidebarButtonEvent:Subject<boolean>=new Subject<boolean>();
   
   constructor() { }
 

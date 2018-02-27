@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import { ISubscription } from "rxjs/Subscription";
@@ -12,10 +12,11 @@ import { Agent } from '../agent';
   templateUrl: './log-viewer.component.html',
   styleUrls: ['./log-viewer.component.css']
 })
-export class LogViewerComponent implements OnInit {
+export class LogViewerComponent implements OnInit,OnDestroy {
   messages: string[] = new Array();
   file: LogFile;
   searchText:string;
+  isSidebarActive:boolean = true;
   private agentManagerService: AgentManagerService;
   private route: ActivatedRoute;
   private navbarEventService: NavbarEventService;
@@ -47,7 +48,10 @@ export class LogViewerComponent implements OnInit {
     window.open(url);
     this.blobPartsDownload = Array();
   }
-
+  ngOnDestroy() {
+    this.newMessageSubscription.unsubscribe();
+  }
+  
   ngOnInit() {
     this.navbarEventService.latestSearch.subscribe(txt=> { this.searchText = txt; });
     this.navbarEventService.cleanSearch();
@@ -63,6 +67,10 @@ export class LogViewerComponent implements OnInit {
 
     this.navbarEventService.downloadButtonEvent.subscribe(
       (x) => { this.download(host, filename, key) }
+    );
+
+    this.navbarEventService.sidebarButtonEvent.subscribe(
+          (x) => { this.isSidebarActive = x }
     );
 
     this.navbarEventService.pauseButtonEvent.subscribe(

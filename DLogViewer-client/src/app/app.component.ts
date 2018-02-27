@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
   canDownload:boolean = false;
   canPause:boolean = false;
   canPlay:boolean = false;
+  isSidebarActive:boolean = true;
   navbarEventService: NavbarEventService;
 
   constructor(
@@ -45,6 +46,17 @@ export class AppComponent implements OnInit {
           this.cdr.detectChanges();
         }
     );
+  }
+
+  toggleSidebar() {
+    console.log("toggle sidebar");
+    if(this.isSidebarActive == true) {
+      this.isSidebarActive = false;
+    } else {
+      this.isSidebarActive = true;
+    }
+
+    this.navbarEventService.sidebarButtonEvent.next(this.isSidebarActive);
   }
 
   pause() {
