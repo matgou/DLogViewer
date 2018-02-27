@@ -8,7 +8,7 @@
           </h6>
         </li>
         <li class="nav-item" *ngFor="let agent of agents">
-          {{ agent.hostname }}
+          {{ agent.hostname }} <span *ngIf="agent.enable"><i class="fa fa-check-circle"></i></span><span *ngIf="!agent.enable"><i class="fa fa-hourglass"></i></span>
         </li>
        </ul>
     </div>
