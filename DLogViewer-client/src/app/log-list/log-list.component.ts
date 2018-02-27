@@ -15,6 +15,7 @@ export class LogListComponent implements OnInit {
   private agentManagerService: AgentManagerService;
   files: LogFile[] = Array();
   searchText:string;
+  filterUrl:string='';
   agents:Agent[];
   parentComponent:AppComponent;
   navbarEventService: NavbarEventService;
@@ -43,6 +44,29 @@ export class LogListComponent implements OnInit {
     var url= window.URL.createObjectURL(blob);
     window.open(url);
     this.blobPartsDownload = Array();
+  }
+
+  filterOn(agent:Agent) {
+    this.files=Array();
+    this.filterUrl = agent.url;
+    this.agentManagerService.getFiles(agent.url, agent.key).subscribe(
+    (x) => {
+      let reader: FileReader = new FileReader();
+      reader.onload = (event) => {
+        let filenames = reader.result.split("\n");
+        for(let filename of filenames) {
+          if(filename != '') {
+            let file = new LogFile();
+            file.filename = filename;
+            agent.enable = true;
+            file.agent = agent;
+            this.files.push(file);
+          }
+        }
+      }
+      reader.readAsText(x.data);
+    }
+    );
   }
 
   parseHostConfig(config: string) {
