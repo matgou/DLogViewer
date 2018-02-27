@@ -5,6 +5,7 @@ import { ISubscription } from "rxjs/Subscription";
 import { AgentManagerService } from '../agent-manager.service'
 import { LogFile } from '../log-file';
 import { NavbarEventService } from '../navbar-event.service';
+import { Agent } from '../agent';
 
 @Component({
   selector: 'app-log-viewer',
@@ -58,8 +59,7 @@ export class LogViewerComponent implements OnInit {
   	let filename = this.route.snapshot.paramMap.get('filename');
   	let key = this.route.snapshot.paramMap.get('key');
   	this.file.filename = filename;
-  	this.file.host = host;
-  	this.file.key = key;
+  	this.file.agent = new Agent(host, key);
 
     this.navbarEventService.downloadButtonEvent.subscribe(
       (x) => { this.download(host, filename, key) }
@@ -75,7 +75,7 @@ export class LogViewerComponent implements OnInit {
 
     this.navbarEventService.playButtonEvent.subscribe(
       (x) => {
-        this.newMessageSubscription = this.agentManagerService.play(this.file.host, this.file.filename, '250', this.file.key).subscribe(
+        this.newMessageSubscription = this.agentManagerService.play(this.file.agent.url, this.file.filename, '250', this.file.agent.key).subscribe(
     		(x) => {
     			let reader: FileReader = new FileReader();
     			reader.onload = (event) => {
@@ -88,7 +88,7 @@ export class LogViewerComponent implements OnInit {
         this.navbarEventService.canPlayEvent.next(false);
       }
     );
-    this.newMessageSubscription = this.agentManagerService.play(this.file.host, this.file.filename, '250', this.file.key).subscribe(
+    this.newMessageSubscription = this.agentManagerService.play(this.file.agent.url, this.file.filename, '250', this.file.agent.key).subscribe(
 		(x) => {
 			let reader: FileReader = new FileReader();
 			reader.onload = (event) => {

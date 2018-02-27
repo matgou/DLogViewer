@@ -1,3 +1,4 @@
+import { Agent } from "./agent"
 /**
  * This class modelise a LogFile
  *  * Storing agent parameters (host and key)
@@ -12,11 +13,7 @@ export class LogFile {
 	 * Host : the host and port of agent
 	 * (websocketd access)
 	 */
-	public host:string;
-	/**
-	 * key : the string to pass on agent before enter command
-	 */
-	public key:string;
+	public agent:Agent;
 
 	/**
 	 * Return basename of file
@@ -31,8 +28,8 @@ export class LogFile {
 	 * Return the hostname of agent
 	 */
 	getHostname() {
-		if(this.host != undefined) {
-			return this.host.split(':')[0];
+		if(this.agent != undefined) {
+			return this.agent.hostname;
 		}
 	}
 }

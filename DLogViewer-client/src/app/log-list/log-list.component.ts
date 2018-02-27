@@ -4,6 +4,7 @@ import { LogFile } from '../log-file';
 import { AgentManagerService } from '../agent-manager.service';
 import { AppComponent } from '../app.component';
 import { NavbarEventService } from '../navbar-event.service';
+import { Agent } from '../agent';
 
 @Component({
   selector: 'app-log-list',
@@ -14,6 +15,7 @@ export class LogListComponent implements OnInit {
   private agentManagerService: AgentManagerService;
   files: LogFile[] = Array();
   searchText:string;
+  agents:Agent[];
   parentComponent:AppComponent;
   navbarEventService: NavbarEventService;
   blobPartsDownload:any[] = new Array();
@@ -45,9 +47,12 @@ export class LogListComponent implements OnInit {
 
   parseHostConfig(config: string) {
 	  let lines = config.split("\n");
+    this.agents = Array();
 	  for(let line of lines) {
 		  let params = line.split(";");
-		  console.log(params[0]);
+      let a:Agent = new Agent(params[0], params[1]);
+      this.agents.push(a);
+		  console.log(a);
 		  this.agentManagerService.getFiles(params[0], params[1]).subscribe(
 			(x) => {
 				let reader: FileReader = new FileReader();
@@ -57,8 +62,8 @@ export class LogListComponent implements OnInit {
 						if(filename != '') {
 							let file = new LogFile();
 							file.filename = filename;
-							file.host = params[0];
-							file.key = params[1];
+              a.enable = true;
+							file.agent = a;
 							this.files.push(file);
 						}
 					}

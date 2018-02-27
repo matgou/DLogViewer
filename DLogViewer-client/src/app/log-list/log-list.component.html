@@ -1,5 +1,20 @@
-      <div class="row">
-        <main role="main" class="col-md-12 ml-sm-auto col-lg-10 pt-3 px-4">
+<div class="row">
+  <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+    <div class="sidebar-sticky">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>Liste des agents</span>
+          </h6>
+        </li>
+        <li class="nav-item" *ngFor="let agent of agents">
+          {{ agent.hostname }}
+        </li>
+       </ul>
+    </div>
+  </nav>
+
+  <main role="main" class="col-md-12 ml-sm-auto col-lg-10 pt-3 px-4">
 		  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
             <h1 class="h2">Liste des fichiers de traces</h1>
           </div>
@@ -17,8 +32,8 @@
 				  <td>{{ file.getHostname() }}</td>
 				  <td>{{ file.filename }}</td>
 				  <td>
-            <button type="button" class="btn btn-success" [routerLink]="['/tail', file.host, file.filename, file.key]" routerLinkActive="active"><i class="fa fa-play"></i> Live</button>
-            <button type="button" class="btn btn-info" (click)="download(file.host, file.filename, file.key)"><i class="fa fa-download"></i>  T&eacute;l&eacute;charger</button>
+            <button type="button" class="btn btn-success" [routerLink]="['/tail', file.agent.url, file.filename, file.agent.key]" routerLinkActive="active"><i class="fa fa-play"></i> Live</button>
+            <button type="button" class="btn btn-info" (click)="download(file.agent.host, file.filename, file.agent.key)"><i class="fa fa-download"></i>  T&eacute;l&eacute;charger</button>
           </td>
 				</tr>
 			  </tbody>
