@@ -12,9 +12,10 @@ import { LogListComponent } from './log-list/log-list.component';
 import { LogFileFilterPipe } from './log-file-filter.pipe';
 import { NavbarEventService } from './navbar-event.service';
 import { MessagesFilterPipe } from './messages-filter.pipe';
+import { LogFileBagService } from './log-file-bag.service';
 
 const appRoutes: Routes = [
-  { path: 'tail/:host/:filename/:key', component: LogViewerComponent },
+  { path: 'tail', component: LogViewerComponent },
   { path: 'list', component: LogListComponent },
   { path: '',   redirectTo: '/list', pathMatch: 'full' },
 ];
@@ -37,7 +38,7 @@ const appRoutes: Routes = [
       { useHash: true } // <-- debugging purposes only
     )
   ],
-  providers: [ AgentManagerService, NavbarEventService ],
+  providers: [ AgentManagerService, NavbarEventService, LogFileBagService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

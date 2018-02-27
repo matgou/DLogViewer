@@ -1,9 +1,11 @@
 import { Host } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { LogFile } from '../log-file';
+import { Router } from '@angular/router';
 import { AgentManagerService } from '../agent-manager.service';
 import { AppComponent } from '../app.component';
 import { NavbarEventService } from '../navbar-event.service';
+import { LogFileBagService } from '../log-file-bag.service';
 import { Agent } from '../agent';
 import { ISubscription } from "rxjs/Subscription";
 
@@ -21,17 +23,22 @@ export class LogListComponent implements OnInit {
   parentComponent:AppComponent;
   navbarEventService: NavbarEventService;
   private filesSubscription: ISubscription[] = Array();
-
+  private router: Router;
+  public logFileBag:LogFileBagService;
   blobPartsDownload:any[] = new Array();
 
   constructor(
     @Host() parentComponent:AppComponent,
   	 agentManagerService: AgentManagerService,
 	   navbarEventService: NavbarEventService,
+     router: Router,
+     logFileBag:LogFileBagService,
   ) {
   	this.agentManagerService = agentManagerService;
   	this.parentComponent = parentComponent;
   	this.navbarEventService = navbarEventService;
+    this.router = router;
+    this.logFileBag = logFileBag;
   }
 
   download(host:string, filename:string, key:string) {
@@ -66,6 +73,16 @@ export class LogListComponent implements OnInit {
       this.activatedAgents = this.activatedAgents.filter(x => x.url !== agent.url);
     }
     this.refreshList();
+  }
+
+  goToLiveBag() {
+    this.router.navigate(['/tail']);
+  }
+  
+  goToLive(file:LogFile) {
+    this.logFileBag.clean();
+    this.logFileBag.toggle(file);
+    this.router.navigate(['/tail']);
   }
 
   parseHostConfig(config: string) {

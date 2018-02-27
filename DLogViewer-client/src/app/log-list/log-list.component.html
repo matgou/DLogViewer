@@ -1,6 +1,17 @@
 <div class="row">
   <nav class="col-md-2 d-none d-md-block bg-light sidebar">
     <div class="sidebar-sticky">
+
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>Actions</span>
+          </h6>
+        </li>
+        <li class="nav-item">
+          <button type="button" class="btn btn-primary" (click)="goToLiveBag()" >Live ({{ logFileBag.fileBag?.length || '0' }} fichiers)</button>
+        </li>
+       </ul>
       <ul class="nav flex-column">
         <li class="nav-item">
           <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
@@ -32,8 +43,10 @@
 				  <td>{{ file.getHostname() }}</td>
 				  <td>{{ file.filename }}</td>
 				  <td>
-            <button type="button" class="btn btn-success" [routerLink]="['/tail', file.agent.url, file.filename, file.agent.key]" routerLinkActive="active"><i class="fa fa-play"></i> Live</button>
+            <button type="button" class="btn btn-primary" (click)="goToLive(file)"><i class="fa fa-play"></i> Live</button>
             <button type="button" class="btn btn-info" (click)="download(file.agent.host, file.filename, file.agent.key)"><i class="fa fa-download"></i>  T&eacute;l&eacute;charger</button>
+            <button type="button" class="btn btn-success" *ngIf="!logFileBag.contains(file)" (click)="logFileBag.toggle(file)"><i class="fa fa-plus"></i>Ajouter</button>
+            <button type="button" class="btn btn-danger" *ngIf="logFileBag.contains(file)" (click)="logFileBag.toggle(file)"><i class="fa fa-plus"></i>Supprimer</button>
           </td>
 				</tr>
 			  </tbody>

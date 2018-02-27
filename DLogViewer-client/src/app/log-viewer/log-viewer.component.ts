@@ -6,6 +6,7 @@ import { AgentManagerService } from '../agent-manager.service'
 import { LogFile } from '../log-file';
 import { NavbarEventService } from '../navbar-event.service';
 import { Agent } from '../agent';
+import { LogFileBagService } from '../log-file-bag.service';
 
 @Component({
   selector: 'app-log-viewer',
@@ -14,24 +15,25 @@ import { Agent } from '../agent';
 })
 export class LogViewerComponent implements OnInit,OnDestroy {
   messages: string[] = new Array();
-  file: LogFile;
   searchText:string;
   isSidebarActive:boolean = true;
   private agentManagerService: AgentManagerService;
   private route: ActivatedRoute;
   private navbarEventService: NavbarEventService;
-  private newMessageSubscription: ISubscription;
+  private newMessageSubscription: ISubscription[] = Array();
+  private logFileBag:LogFileBagService;
   blobPartsDownload:any[] = new Array();
 
   constructor(
   	agentManagerService: AgentManagerService,
   	route: ActivatedRoute,
     navbarEventService: NavbarEventService,
+    logFileBag:LogFileBagService
   ) {
 	   this.agentManagerService = agentManagerService;
      this.route = route;
      this.navbarEventService = navbarEventService;
-	   this.file = new LogFile();
+     this.logFileBag = logFileBag;
   }
 
   download(host:string, filename:string, key:string) {
@@ -49,9 +51,11 @@ export class LogViewerComponent implements OnInit,OnDestroy {
     this.blobPartsDownload = Array();
   }
   ngOnDestroy() {
-    this.newMessageSubscription.unsubscribe();
+    for(let subscription of this.newMessageSubscription) {
+      subscription.unsubscribe();
+    }
   }
-  
+
   ngOnInit() {
     this.navbarEventService.latestSearch.subscribe(txt=> { this.searchText = txt; });
     this.navbarEventService.cleanSearch();
@@ -62,8 +66,6 @@ export class LogViewerComponent implements OnInit,OnDestroy {
     let host = this.route.snapshot.paramMap.get('host');
   	let filename = this.route.snapshot.paramMap.get('filename');
   	let key = this.route.snapshot.paramMap.get('key');
-  	this.file.filename = filename;
-  	this.file.agent = new Agent(host, key);
 
     this.navbarEventService.downloadButtonEvent.subscribe(
       (x) => { this.download(host, filename, key) }
@@ -75,7 +77,9 @@ export class LogViewerComponent implements OnInit,OnDestroy {
 
     this.navbarEventService.pauseButtonEvent.subscribe(
           (x) => {
-            this.newMessageSubscription.unsubscribe();
+            for(let subscription of this.newMessageSubscription) {
+              subscription.unsubscribe();
+            }
             this.navbarEventService.canPauseEvent.next(false);
             this.navbarEventService.canPlayEvent.next(true);
          }
@@ -83,28 +87,28 @@ export class LogViewerComponent implements OnInit,OnDestroy {
 
     this.navbarEventService.playButtonEvent.subscribe(
       (x) => {
-        this.newMessageSubscription = this.agentManagerService.play(this.file.agent.url, this.file.filename, '250', this.file.agent.key).subscribe(
-    		(x) => {
-    			let reader: FileReader = new FileReader();
-    			reader.onload = (event) => {
-    				this.messages.push(reader.result);
-    				window.scrollTo(0,document.body.scrollHeight+50);
-    			}
-    			reader.readAsText(x.data);
-    		});
+        // Foreach file to display
+        for(let file of this.logFileBag.fileBag) {
+          let subscription = this.agentManagerService.play(file.agent.url, file.filename, '250', file.agent.key).subscribe(
+      		(x) => {
+      			let reader: FileReader = new FileReader();
+      			reader.onload = (event) => {
+      				this.messages.push(reader.result);
+      				window.scrollTo(0,document.body.scrollHeight+50);
+      			}
+      			reader.readAsText(x.data);
+      		});
+          // Save subscription to unsubscribe it when "pause"
+          this.newMessageSubscription.push(subscription);
+        }
+
+        // Update navbar to display pause
         this.navbarEventService.canPauseEvent.next(true);
         this.navbarEventService.canPlayEvent.next(false);
       }
     );
-    this.newMessageSubscription = this.agentManagerService.play(this.file.agent.url, this.file.filename, '250', this.file.agent.key).subscribe(
-		(x) => {
-			let reader: FileReader = new FileReader();
-			reader.onload = (event) => {
-				this.messages.push(reader.result);
-				window.scrollTo(window.scrollX,document.body.scrollHeight+50);
-			}
-			reader.readAsText(x.data);
-		}
-	);
+
+    // Play to launch stream
+    this.navbarEventService.playButtonEvent.next(true);
   }
 }
