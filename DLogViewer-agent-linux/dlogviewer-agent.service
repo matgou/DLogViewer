@@ -1,0 +1,12 @@
+[Unit]
+Description=dlogviewer-agent
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/mnt/tank/system/applications/DLogViewer/DLogViewer-agent-linux
+Type=simple
+ExecStart=/mnt/tank/system/applications/DLogViewer/DLogViewer-agent-linux/websocketd --ssl --sslcert ./cert.pem --sslkey ./key.pem --binary=true --port=65000 ./handler.sh
+
+[Install]
+WantedBy=multi-user.target

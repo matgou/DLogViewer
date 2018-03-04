@@ -57,6 +57,8 @@ export class LogListComponent implements OnInit {
   }
 
   isAgentDisplay(agent:Agent):boolean {
+    if(agent.error == true) { return false };
+    if(agent.enable == false) { return false };
     let i = this.activatedAgents.findIndex(x => x.url === agent.url);
     if(i<0) {
       return false;
@@ -121,10 +123,16 @@ export class LogListComponent implements OnInit {
   					         }
 				           }
 				           reader.readAsText(x.data);
-			         }
+			         },
+               error => { agent.enable = false; agent.error = true; this.displayError(agent.hostname + ' error') },
 			  );
         this.filesSubscription.push(subscription);
 	  }
+  }
+
+  displayError(error) {
+    console.log("Erreur sur socket: ");
+    console.log(error);
   }
 
   ngOnInit() {

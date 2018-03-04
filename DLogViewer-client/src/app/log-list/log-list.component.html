@@ -19,7 +19,8 @@
           </h6>
         </li>
         <li class="nav-item" *ngFor="let agent of agents">
-          <a class="nav-link" [ngClass]="{'active':isAgentDisplay(agent)}" href="javascript:void(0)" (click)="filterOn(agent)">{{ agent.hostname }} <span *ngIf="agent.enable"><i class="fa fa-check-circle"></i></span><span *ngIf="!agent.enable"><i class="fa fa-hourglass"></i></span></a>
+          <a *ngIf="!agent.error" class="nav-link" [ngClass]="{'active':isAgentDisplay(agent)}" href="javascript:void(0)" (click)="filterOn(agent)">{{ agent.hostname }} <span *ngIf="agent.enable"><i class="fa fa-check-circle"></i></span><span *ngIf="!agent.enable"><i class="fa fa-hourglass"></i></span></a>
+          <a href="https://{{ agent.url }}" class="nav-link"><span class="text-danger" *ngIf="agent.error">{{ agent.hostname }} <i class="fa fa-times"></i></span></a>
         </li>
        </ul>
     </div>

@@ -17,7 +17,7 @@ export class AgentManagerService {
   }
 
   getFiles(host: string, key: string):Observable<MessageEvent> {
-  	let ws = new WebSocket("ws://" + host);
+  	let ws = new WebSocket("wss://" + host);
   	console.log("Socket has been created!");
   	console.log(ws);
   	ws.onopen = function (event) {

@@ -7,6 +7,7 @@ export class Agent {
   key:string;
   url:string;
 
+  error:boolean = false;
   enable:boolean;
 
   constructor(url:string, key:string) {
