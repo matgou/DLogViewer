@@ -15,6 +15,7 @@ import { LogFileBagService } from '../log-file-bag.service';
 })
 export class LogViewerComponent implements OnInit,OnDestroy {
   messages: string[] = new Array();
+  allMesssages: string[] = new Array();
   searchText:string;
   isSidebarActive:boolean = true;
   private agentManagerService: AgentManagerService;
@@ -34,6 +35,11 @@ export class LogViewerComponent implements OnInit,OnDestroy {
      this.route = route;
      this.navbarEventService = navbarEventService;
      this.logFileBag = logFileBag;
+  }
+
+  filterMessage(searchText:string) {
+    this.searchText = searchText;
+    this.messages = this.allMesssages.filter( message => message.includes(this.searchText) );
   }
 
   download(file) {
@@ -57,7 +63,9 @@ export class LogViewerComponent implements OnInit,OnDestroy {
   }
 
   ngOnInit() {
-    this.navbarEventService.latestSearch.subscribe(txt=> { this.searchText = txt; });
+    this.navbarEventService.latestSearch.subscribe(txt=> {
+      this.filterMessage(txt);
+    });
     this.navbarEventService.cleanSearch();
     this.navbarEventService.canPauseEvent.next(true);
     this.navbarEventService.canPlayEvent.next(false);
@@ -84,7 +92,11 @@ export class LogViewerComponent implements OnInit,OnDestroy {
       		(x) => {
       			let reader: FileReader = new FileReader();
       			reader.onload = (event) => {
-      				this.messages.push(reader.result);
+      				this.allMesssages.push(reader.result);
+              // if reader.result .contains this.searchText => this.messages.push()
+              if(reader.result.includes(this.searchText)) {
+                this.messages.push(reader.result);
+              }
       				window.scrollTo(window.scrollX,document.body.scrollHeight+50);
       			}
       			reader.readAsText(x.data);
