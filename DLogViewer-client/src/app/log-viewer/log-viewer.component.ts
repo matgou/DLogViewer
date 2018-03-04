@@ -94,7 +94,7 @@ export class LogViewerComponent implements OnInit,OnDestroy {
       			let reader: FileReader = new FileReader();
       			reader.onload = (event) => {
       				this.messages.push(reader.result);
-      				window.scrollTo(0,document.body.scrollHeight+50);
+      				window.scrollTo(window.scrollX,document.body.scrollHeight+50);
       			}
       			reader.readAsText(x.data);
       		});
