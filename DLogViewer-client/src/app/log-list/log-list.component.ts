@@ -41,8 +41,8 @@ export class LogListComponent implements OnInit {
     this.logFileBag = logFileBag;
   }
 
-  download(host:string, filename:string, key:string) {
-    this.agentManagerService.cat(host,filename,key).subscribe(
+  download(file:LogFile) {
+    this.agentManagerService.cat(file.agent.url,file.filename,file.agent.key).subscribe(
       data => { console.log("receive data"); this.blobPartsDownload.push(data.data); },
       error => console.log("Error downloading the file."),
       () => this.downloadFile()
@@ -78,7 +78,7 @@ export class LogListComponent implements OnInit {
   goToLiveBag() {
     this.router.navigate(['/tail']);
   }
-  
+
   goToLive(file:LogFile) {
     this.logFileBag.clean();
     this.logFileBag.toggle(file);

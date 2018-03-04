@@ -44,7 +44,7 @@
 				  <td>{{ file.filename }}</td>
 				  <td>
             <button type="button" class="btn btn-primary" (click)="goToLive(file)"><i class="fa fa-play"></i> Live</button>
-            <button type="button" class="btn btn-info" (click)="download(file.agent.host, file.filename, file.agent.key)"><i class="fa fa-download"></i>  T&eacute;l&eacute;charger</button>
+            <button type="button" class="btn btn-info" (click)="download(file)"><i class="fa fa-download"></i>  T&eacute;l&eacute;charger</button>
             <button type="button" class="btn btn-success" *ngIf="!logFileBag.contains(file)" (click)="logFileBag.toggle(file)"><i class="fa fa-plus"></i>Ajouter</button>
             <button type="button" class="btn btn-danger" *ngIf="logFileBag.contains(file)" (click)="logFileBag.toggle(file)"><i class="fa fa-plus"></i>Supprimer</button>
           </td>
