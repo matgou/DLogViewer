@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { NavbarEventService } from './navbar-event.service';
+import { LogFileBagService } from './log-file-bag.service';
+import { LogFile } from './log-file';
 
 @Component({
   selector: 'app-root',
@@ -10,27 +12,24 @@ import { NavbarEventService } from './navbar-event.service';
 export class AppComponent implements OnInit {
   title = 'app';
   public searchText: string = '';
-  canDownload:boolean = false;
   canPause:boolean = false;
   canPlay:boolean = false;
   isSidebarActive:boolean = true;
   navbarEventService: NavbarEventService;
+  logFileBagService: LogFileBagService;
+  fileBag: LogFile[] = Array();
 
   constructor(
     navbarEventService: NavbarEventService,
+    logFileBagService: LogFileBagService,
     private cdr: ChangeDetectorRef,
   ) {
+    this.logFileBagService = logFileBagService;
   	this.navbarEventService = navbarEventService;
     this.navbarEventService.cleanSearchEvent.subscribe(
         (x) => {
           console.log("CleanSearch receive");
           this.searchText = "";
-          this.cdr.detectChanges();
-        }
-    );
-    this.navbarEventService.canDownloadEvent.subscribe(
-        (x) => {
-          this.canDownload = x;
           this.cdr.detectChanges();
         }
     );
@@ -69,12 +68,10 @@ export class AppComponent implements OnInit {
     this.navbarEventService.playButtonEvent.next(true);
   }
 
-  download() {
-    console.log("download");
-    this.navbarEventService.downloadButtonEvent.next(true);
-  }
-
   ngOnInit() {
+    this.logFileBagService.fileBagChangeEvent.subscribe(
+      (x) => { this.fileBag = x; }
+    );
   }
 
   searchChange(event) {

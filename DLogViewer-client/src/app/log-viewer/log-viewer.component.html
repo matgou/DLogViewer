@@ -11,7 +11,7 @@
               <li class="nav-item" *ngFor="let file of logFileBag.fileBag">
                 <a class="nav-link active" href="#">
                   <span data-feather="home"></span>
-                  {{ file.getBasename() }}
+                  {{ file.getBasename() }} <a href="javascript:void(0)" (click)="download(file)"><i class="fa fa-download"></i></a>
                 </a>
               </li>
              </ul>

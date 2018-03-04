@@ -130,7 +130,6 @@ export class LogListComponent implements OnInit {
   ngOnInit() {
 	  this.navbarEventService.latestSearch.subscribe(txt=> { this.searchText = txt; });
     this.navbarEventService.cleanSearch();
-    this.navbarEventService.canDownloadEvent.next(false);
     this.navbarEventService.canPauseEvent.next(false);
     this.navbarEventService.canPlayEvent.next(false);
 

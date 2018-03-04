@@ -36,14 +36,12 @@ export class LogViewerComponent implements OnInit,OnDestroy {
      this.logFileBag = logFileBag;
   }
 
-  download() {
-    for(let file of this.logFileBag.fileBag) {
-      this.agentManagerService.cat(file.agent.url,file.filename,file.agent.key).subscribe(
-        data => { console.log("receive data"); this.blobPartsDownload.push(data.data); },
-        error => console.log("Error downloading the file."),
-        () => this.downloadFile(),
-      );
-    }
+  download(file) {
+    this.agentManagerService.cat(file.agent.url,file.filename,file.agent.key).subscribe(
+      data => { console.log("receive data"); this.blobPartsDownload.push(data.data); },
+      error => console.log("Error downloading the file."),
+      () => this.downloadFile(),
+    );
   }
 
   downloadFile() {
@@ -61,13 +59,8 @@ export class LogViewerComponent implements OnInit,OnDestroy {
   ngOnInit() {
     this.navbarEventService.latestSearch.subscribe(txt=> { this.searchText = txt; });
     this.navbarEventService.cleanSearch();
-    this.navbarEventService.canDownloadEvent.next(true);
     this.navbarEventService.canPauseEvent.next(true);
     this.navbarEventService.canPlayEvent.next(false);
-
-    this.navbarEventService.downloadButtonEvent.subscribe(
-      (x) => { this.download() }
-    );
 
     this.navbarEventService.sidebarButtonEvent.subscribe(
           (x) => { this.isSidebarActive = x }
