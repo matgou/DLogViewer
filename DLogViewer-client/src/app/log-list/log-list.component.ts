@@ -133,6 +133,8 @@ export class LogListComponent implements OnInit {
     this.navbarEventService.canPauseEvent.next(false);
     this.navbarEventService.canPlayEvent.next(false);
 
+    this.logFileBag.clean();
+
 	  this.agentManagerService.getHosts().subscribe(
 	    data => { this.parseHostConfig(data); }
 	  );
