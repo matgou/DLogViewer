@@ -8,11 +8,22 @@ configFile=$AgentDirectory/config.txt
 
 . $configFile
 
+tstFilename() {
+  ls $PATH_PATERN | grep -Eq "^$1\$"
+  RC=$?
+  if [ "$RC" != "0" ]
+  then
+	log "Fichier non valide"
+	exit 255
+  fi
+}
+
 # Read filename and histoSize on STDIN
 # tail this logfile
 cmdTail() {
     read filename
     log "filename=$filename"
+	tstFilename $filename
     read histoSize
     log "histoSize=$histoSize"
 
@@ -29,6 +40,7 @@ cmdTail() {
 cmdCat() {
     read filename
     log "filename=$filename"
+	tstFilename $filename
 
     cat $filename
 }

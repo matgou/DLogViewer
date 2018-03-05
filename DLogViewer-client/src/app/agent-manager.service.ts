@@ -38,7 +38,7 @@ export class AgentManagerService {
   }
 
   cat(host: string, filename: string, key:string):Observable<MessageEvent> {
-    let ws = new WebSocket("ws://" + host);
+    let ws = new WebSocket("wss://" + host);
     console.log("Socket has been created!");
     console.log(ws);
     ws.onopen = function (event) {
@@ -60,7 +60,7 @@ export class AgentManagerService {
   }
 
   play(host: string, filename: string, historySize:String, key:string):Observable<MessageEvent> {
-  	let ws = new WebSocket("ws://" + host);
+  	let ws = new WebSocket("wss://" + host);
   	console.log("Socket has been created!");
   	console.log(ws);
   	ws.onopen = function (event) {

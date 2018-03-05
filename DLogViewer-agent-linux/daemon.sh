@@ -5,7 +5,8 @@
 # Source init functions
 . /etc/init.d/functions
 
-prog="`dirname $0`/websocketd --binary=true --port=65000 ./handler.sh"
+prog="`dirname $0`/websocketd"
+args=" --binary=true --port=65000 --ssl --sslcert=cert.pem --sslkey=key.pem ./handler.sh"
 
 RETVAL=0
 
@@ -14,7 +15,7 @@ start()
     # Quit if disabled
     echo "Starting $prog"
 
-    daemon $prog &
+    daemon $prog $args &
 
     RETVAL=$?
 
