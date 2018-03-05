@@ -6,7 +6,7 @@
 . /etc/init.d/functions
 
 prog="`dirname $0`/websocketd"
-args=" --binary=true --port=65000 --ssl --sslcert=cert.pem --sslkey=key.pem ./handler.sh"
+args=" --binary=true --port=65000 --ssl --sslcert=cert.pem --sslkey=key.pem --staticdir=`dirname $0`/html/ ./handler.sh"
 
 RETVAL=0
 
