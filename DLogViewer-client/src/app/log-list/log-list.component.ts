@@ -42,7 +42,7 @@ export class LogListComponent implements OnInit {
   }
 
   download(file:LogFile) {
-    this.agentManagerService.cat(file.agent.url,file.filename,file.agent.key).subscribe(
+    this.agentManagerService.cat(file.agent.url,file.filename,file.agent.key, file.agent.ssl).subscribe(
       data => { console.log("receive data"); this.blobPartsDownload.push(data.data); },
       error => console.log("Error downloading the file."),
       () => this.downloadFile()
@@ -93,7 +93,11 @@ export class LogListComponent implements OnInit {
     this.activatedAgents = Array();
 	  for(let line of lines) {
 		  let params = line.split(";");
-      let a:Agent = new Agent(params[0], params[1]);
+      let ssl = false;
+      if(params[0].includes("ssl")) {
+        ssl = true;
+      }
+      let a:Agent = new Agent(params[1], params[2], ssl);
       this.agents.push(a);
       this.activatedAgents.push(a);
 		  console.log(a);
@@ -107,7 +111,7 @@ export class LogListComponent implements OnInit {
     }
     this.files = Array();
     for(let agent of this.activatedAgents) {
-		    let subscription = this.agentManagerService.getFiles(agent.url, agent.key).subscribe(
+		    let subscription = this.agentManagerService.getFiles(agent.url, agent.key, agent.ssl).subscribe(
 			       (x) => {
 				           let reader: FileReader = new FileReader();
 				           reader.onload = (event) => {

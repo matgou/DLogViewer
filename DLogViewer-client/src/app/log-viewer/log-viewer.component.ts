@@ -43,7 +43,7 @@ export class LogViewerComponent implements OnInit,OnDestroy {
   }
 
   download(file) {
-    this.agentManagerService.cat(file.agent.url,file.filename,file.agent.key).subscribe(
+    this.agentManagerService.cat(file.agent.url,file.filename,file.agent.key, file.agent.ssl).subscribe(
       data => { console.log("receive data"); this.blobPartsDownload.push(data.data); },
       error => console.log("Error downloading the file."),
       () => this.downloadFile(),
@@ -88,7 +88,7 @@ export class LogViewerComponent implements OnInit,OnDestroy {
       (x) => {
         // Foreach file to display
         for(let file of this.logFileBag.fileBag) {
-          let subscription = this.agentManagerService.play(file.agent.url, file.filename, '250', file.agent.key).subscribe(
+          let subscription = this.agentManagerService.play(file.agent.url, file.filename, '250', file.agent.key, file.agent.ssl).subscribe(
       		(x) => {
       			let reader: FileReader = new FileReader();
       			reader.onload = (event) => {

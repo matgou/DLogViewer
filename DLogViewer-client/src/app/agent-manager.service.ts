@@ -16,8 +16,8 @@ export class AgentManagerService {
   	return this.http.get(url, {responseType: 'text'});
   }
 
-  getFiles(host: string, key: string):Observable<MessageEvent> {
-  	let ws = new WebSocket("wss://" + host);
+  getFiles(host: string, key: string, ssl:boolean):Observable<MessageEvent> {
+  	let ws = new WebSocket(this.prefix(ssl) + "://" + host);
   	console.log("Socket has been created!");
   	console.log(ws);
   	ws.onopen = function (event) {
@@ -37,8 +37,16 @@ export class AgentManagerService {
   	return observable;
   }
 
-  cat(host: string, filename: string, key:string):Observable<MessageEvent> {
-    let ws = new WebSocket("wss://" + host);
+  prefix(ssl:boolean) {
+    if(ssl == true) {
+      return "wss";
+    }
+    return "ws";
+  }
+
+  cat(host: string, filename: string, key:string, ssl:boolean):Observable<MessageEvent> {
+
+    let ws = new WebSocket(this.prefix(ssl) + "://" + host);
     console.log("Socket has been created!");
     console.log(ws);
     ws.onopen = function (event) {
@@ -59,8 +67,8 @@ export class AgentManagerService {
     return observable;
   }
 
-  play(host: string, filename: string, historySize:String, key:string):Observable<MessageEvent> {
-  	let ws = new WebSocket("wss://" + host);
+  play(host: string, filename: string, historySize:String, key:string, ssl:boolean):Observable<MessageEvent> {
+  	let ws = new WebSocket(this.prefix(ssl) + "://" + host);
   	console.log("Socket has been created!");
   	console.log(ws);
   	ws.onopen = function (event) {
